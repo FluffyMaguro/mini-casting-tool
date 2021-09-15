@@ -38,10 +38,15 @@ class AppWindow(QtWidgets.QWidget):
 
         # Add player button
         add_player_button = QtWidgets.QPushButton()
-        add_player_button.setMaximumWidth(100)
         add_player_button.setText("Add player")
-        bottom_layout.addWidget(add_player_button, 0, 1, 1, 3)
+        bottom_layout.addWidget(add_player_button, 0, 1, 1, 1)
         add_player_button.clicked.connect(self.add_player)
+
+        # Reset players button
+        reset_players_button = QtWidgets.QPushButton()
+        reset_players_button.setText("Reset")
+        bottom_layout.addWidget(reset_players_button, 0, 2, 1, 1)
+        reset_players_button.clicked.connect(self.reset_players)
 
         # Github button
         github_button = QtWidgets.QPushButton(" app github")
@@ -53,7 +58,7 @@ class AppWindow(QtWidgets.QWidget):
         icon.addPixmap(QtGui.QPixmap(HF.inner("src/github.png")),
                        QtGui.QIcon.Selected, QtGui.QIcon.On)
         github_button.setIcon(icon)
-        bottom_layout.addWidget(github_button, 0, 4, 1, 1)
+        bottom_layout.addWidget(github_button, 0, 3, 1, 1)
 
         # Maguro button
         maguro_button = QtWidgets.QPushButton(" maguro.one")
@@ -65,7 +70,7 @@ class AppWindow(QtWidgets.QWidget):
         icon.addPixmap(QtGui.QPixmap(HF.inner("src/maguro.jpg")),
                        QtGui.QIcon.Selected, QtGui.QIcon.On)
         maguro_button.setIcon(icon)
-        bottom_layout.addWidget(maguro_button, 0, 5, 1, 1)
+        bottom_layout.addWidget(maguro_button, 0, 4, 1, 1)
 
         # Players
         players_frame = QtWidgets.QFrame(self)
@@ -75,7 +80,7 @@ class AppWindow(QtWidgets.QWidget):
         players_frame.setLayout(self.player_layout)
         self.add_player()
         self.add_player()
-        
+
         # Start connection
         self.start_websocket()
 
@@ -86,6 +91,11 @@ class AppWindow(QtWidgets.QWidget):
         self.players[-1].btn_remove.clicked.connect(
             partial(self.remove_player, self.players[-1]))
         self.players[-1].data_changed.connect(self.player_data_changed)
+
+    def reset_players(self):
+        for player in self.players:
+            player.reset_player()
+        self.player_data_changed()
 
     def remove_player(self, player_frame):
         self.player_layout.removeWidget(player_frame)

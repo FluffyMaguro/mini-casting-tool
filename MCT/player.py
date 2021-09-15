@@ -69,6 +69,20 @@ class Player(QtWidgets.QFrame):
             getattr(QtWidgets.QStyle, 'SP_DialogCancelButton')))
         layout.addWidget(self.btn_remove)
 
+    def reset_player(self, disconnect=True):
+        """ Reset player name and score
+        `disconnect` temporarily disconnect signals."""
+        if disconnect:
+            self.player_name.disconnect()
+            self.score.disconnect()
+
+        self.player_name.setText("")
+        self.score.setText("")
+
+        if disconnect:
+            self.player_name.textChanged.connect(self.data_changed.emit)
+            self.score.textChanged.connect(self.data_changed.emit)
+
     def open_color_dialog(self, button):
         color = QtWidgets.QColorDialog.getColor()
         if color.isValid():

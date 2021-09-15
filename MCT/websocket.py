@@ -11,7 +11,6 @@ lock = threading.Lock()
 
 class Websocket_connection():
     def __init__(self, port=7306):
-        self.messages_sent = 0
         self.overlay_messages = []
         self.port = port
 
@@ -27,25 +26,32 @@ class Websocket_connection():
         except Exception:
             traceback.print_exc()
 
+    @staticmethod
+    async def _send_ws_message(websocket, message):
+        message = json.dumps(message)
+        print(f"WS sending: {message}")
+        await asyncio.wait_for(asyncio.gather(websocket.send(message)),
+                               timeout=1)
+
     async def manager(self, websocket, path):
         """ Manages websocket connection for each client """
         print(f"Opening: {websocket}")
 
         # Send the last message if there is one
         if len(self.overlay_messages) > 0:
-            self.send(self.overlay_messages[-1]) 
-        sent = self.messages_sent
+            await self._send_ws_message(websocket, self.overlay_messages[-1])
+
+        sent = len(self.overlay_messages)
 
         while True:
             try:
                 if len(self.overlay_messages) == sent:
                     continue
 
-                message = json.dumps(self.overlay_messages[sent])
-                print(f"WS sending: {self.overlay_messages[sent]}")
+                await self._send_ws_message(websocket,
+                                            self.overlay_messages[sent])
                 sent += 1
-                await asyncio.wait_for(asyncio.gather(websocket.send(message)),
-                                       timeout=1)
+
             except asyncio.TimeoutError:
                 print(f'#{sent-1} message was timed-out.')
 
@@ -70,5 +76,4 @@ class Websocket_connection():
     def send(self, event):
         """ Send message throught a websocket """
         with lock:
-            self.messages_sent += 1
             self.overlay_messages.append(event)
