@@ -53,7 +53,9 @@ class AppWindow(QtWidgets.QWidget):
         github_button.setMaximumWidth(90)
         github_button.setToolTip("Link to the github page of the app")
         github_button.setStyleSheet("border: 0")
-        github_button.clicked.connect(self.show_info)
+        github_button.clicked.connect(
+            partial(webbrowser.open,
+                    "https://github.com/FluffyMaguro/mini-casting-tool"))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(HF.inner("src/github.png")),
                        QtGui.QIcon.Selected, QtGui.QIcon.On)
@@ -65,7 +67,8 @@ class AppWindow(QtWidgets.QWidget):
         maguro_button.setMaximumWidth(90)
         maguro_button.setToolTip("Link to my website")
         maguro_button.setStyleSheet("border: 0")
-        maguro_button.clicked.connect(self.show_info)
+        maguro_button.clicked.connect(
+            partial(webbrowser.open, "https://www.maguro.one/"))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(HF.inner("src/maguro.jpg")),
                        QtGui.QIcon.Selected, QtGui.QIcon.On)
@@ -113,9 +116,6 @@ class AppWindow(QtWidgets.QWidget):
         for player in self.players:
             data.append(player.get_data())
         self.connection.send(data)
-
-    def show_info(self):
-        webbrowser.open("https://github.com/FluffyMaguro/mini-casting-tool")
 
 
 if __name__ == '__main__':
