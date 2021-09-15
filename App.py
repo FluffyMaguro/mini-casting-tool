@@ -1,20 +1,22 @@
 import sys
 import threading
+import webbrowser
 from functools import partial
 
-import webbrowser
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+import MCT.helper_functions as HF
 from MCT.player import Player
 from MCT.websocket import Websocket_connection
 
 VERSION = "1.0"
 
+
 class AppWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle(f"Minimal Casting Tool (v{VERSION})")
-        self.setWindowIcon(QtGui.QIcon('src/Icon.ico'))
+        self.setWindowIcon(QtGui.QIcon(HF.inner('src/Icon.ico')))
         self.setGeometry(0, 0, 530, 150)
         self.move(QtWidgets.QDesktopWidget().availableGeometry().center() -
                   QtCore.QPoint(int(self.width() / 2), self.height()))
@@ -28,6 +30,43 @@ class AppWindow(QtWidgets.QWidget):
         self.layout.setAlignment(QtCore.Qt.AlignTop)
         self.setLayout(self.layout)
 
+        # Bottom frame
+        bottom_frame = QtWidgets.QFrame()
+        self.layout.addWidget(bottom_frame)
+        bottom_layout = QtWidgets.QGridLayout()
+        bottom_frame.setLayout(bottom_layout)
+
+        # Add player button
+        add_player_button = QtWidgets.QPushButton()
+        add_player_button.setMaximumWidth(100)
+        add_player_button.setText("Add player")
+        bottom_layout.addWidget(add_player_button, 0, 1, 1, 3)
+        add_player_button.clicked.connect(self.add_player)
+
+        # Github button
+        github_button = QtWidgets.QPushButton(" app github")
+        github_button.setMaximumWidth(90)
+        github_button.setToolTip("Link to the github page of the app")
+        github_button.setStyleSheet("border: 0")
+        github_button.clicked.connect(self.show_info)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(HF.inner("src/github.png")),
+                       QtGui.QIcon.Selected, QtGui.QIcon.On)
+        github_button.setIcon(icon)
+        bottom_layout.addWidget(github_button, 0, 4, 1, 1)
+
+        # Maguro button
+        maguro_button = QtWidgets.QPushButton(" maguro.one")
+        maguro_button.setMaximumWidth(90)
+        maguro_button.setToolTip("Link to my website")
+        maguro_button.setStyleSheet("border: 0")
+        maguro_button.clicked.connect(self.show_info)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(HF.inner("src/maguro.jpg")),
+                       QtGui.QIcon.Selected, QtGui.QIcon.On)
+        maguro_button.setIcon(icon)
+        bottom_layout.addWidget(maguro_button, 0, 5, 1, 1)
+
         # Players
         players_frame = QtWidgets.QFrame(self)
         self.layout.addWidget(players_frame)
@@ -36,28 +75,7 @@ class AppWindow(QtWidgets.QWidget):
         players_frame.setLayout(self.player_layout)
         self.add_player()
         self.add_player()
-
-        # Add player button
-        bottom_frame = QtWidgets.QFrame()
-        self.layout.addWidget(bottom_frame)
-        bottom_layout = QtWidgets.QGridLayout()
-        bottom_frame.setLayout(bottom_layout)
-
-        add_player_button = QtWidgets.QPushButton()
-        add_player_button.setMaximumWidth(100)
-        add_player_button.setText("Add player")
-        bottom_layout.addWidget(add_player_button, 0, 1, 1, 3)
-        add_player_button.clicked.connect(self.add_player)
-
-        # Info button
-        info_button = QtWidgets.QPushButton()
-        info_button.setMaximumWidth(30)
-        bottom_layout.addWidget(info_button, 0, 4, 1, 1)
-        info_button.clicked.connect(self.show_info)
-        # info_button.setStyleSheet("border :0px")
-        info_button.setIcon(self.style().standardIcon(
-            getattr(QtWidgets.QStyle, 'SP_MessageBoxInformation')))
-
+        
         # Start connection
         self.start_websocket()
 
@@ -87,7 +105,7 @@ class AppWindow(QtWidgets.QWidget):
         self.connection.send(data)
 
     def show_info(self):
-        webbrowser.open("https://www.maguro.one/")
+        webbrowser.open("https://github.com/FluffyMaguro/mini-casting-tool")
 
 
 if __name__ == '__main__':

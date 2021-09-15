@@ -12,9 +12,17 @@ def get_basic_color(index):
 
 def get_factions_backgrounds():
     """ Returns paths to faction and background images"""
-    bg = os.listdir("src/backgrounds")
+    bg = os.listdir(outer("src/backgrounds"))
     bg = {i: os.path.abspath(os.path.join(os.getcwd(), i)) for i in bg}
-    fc = os.listdir("src/factions")
+    fc = os.listdir(outer("src/factions"))
     fc = {i: os.path.abspath(os.path.join(os.getcwd(), i)) for i in fc}
 
     return fc, bg
+
+
+def inner(path):
+    return path
+
+
+def outer(path):
+    return path

@@ -23,6 +23,15 @@ class Player(QtWidgets.QFrame):
         self.player_name.textChanged.connect(self.data_changed.emit)
         layout.addWidget(self.player_name)
 
+        # Score
+        self.score = QtWidgets.QLineEdit()
+        self.score.setPlaceholderText("–")
+        self.score.setToolTip("Player score. Don't change if best of one.")
+        self.score.setMaximumWidth(30)
+        self.score.setAlignment(QtCore.Qt.AlignCenter)
+        self.score.textChanged.connect(self.data_changed.emit)
+        layout.addWidget(self.score)
+
         # Color
         color_button = QtWidgets.QPushButton()
         color_button.setToolTip("Change player color")
@@ -70,6 +79,9 @@ class Player(QtWidgets.QFrame):
     def get_name(self):
         return self.player_name.text()
 
+    def get_score(self):
+        return self.score.text()
+
     def get_color(self):
         return self.color
 
@@ -85,6 +97,7 @@ class Player(QtWidgets.QFrame):
         """ Returns all player data"""
         return {
             'name': self.get_name(),
+            'score': self.get_score(),
             'color': self.get_color(),
             'faction': self.get_faction(),
             'background': self.get_background()
