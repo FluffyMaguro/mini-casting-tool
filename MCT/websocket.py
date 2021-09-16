@@ -9,14 +9,19 @@ from websockets.legacy.server import serve as websockets_serve
 lock = threading.Lock()
 
 
-class Websocket_connection():
+class Websocket_connection_manager():
     def __init__(self, port=7306):
         self.overlay_messages = []
         self.port = port
 
     def run(self):
+        self.thread_server = threading.Thread(target=self.start_manager,
+                                              daemon=True)
+        self.thread_server.start()
+
+    def start_manager(self):
         try:
-            print('Starting websocket server')
+            print('Starting a websocket server')
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             start_server = websockets_serve(self.manager, 'localhost',

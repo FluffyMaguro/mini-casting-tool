@@ -1,6 +1,6 @@
 from functools import partial
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 import MCT.helper_functions as HF
 
@@ -23,15 +23,6 @@ class Player(QtWidgets.QFrame):
         self.player_name.textChanged.connect(self.data_changed.emit)
         layout.addWidget(self.player_name)
 
-        # Score
-        self.score = QtWidgets.QLineEdit()
-        self.score.setPlaceholderText("–")
-        self.score.setToolTip("Player score. Don't change if best of one.")
-        self.score.setMaximumWidth(30)
-        self.score.setAlignment(QtCore.Qt.AlignCenter)
-        self.score.textChanged.connect(self.data_changed.emit)
-        layout.addWidget(self.score)
-
         # Color
         color_button = QtWidgets.QPushButton()
         color_button.setToolTip("Change player color")
@@ -45,20 +36,31 @@ class Player(QtWidgets.QFrame):
         self.faction_combo_box = QtWidgets.QComboBox()
         self.faction_combo_box.setToolTip("Change player faction image")
         layout.addWidget(self.faction_combo_box)
-        self.bg_combo_box = QtWidgets.QComboBox()
-        self.bg_combo_box.setToolTip("Change player background image")
-        layout.addWidget(self.bg_combo_box)
+        self.factions = HF.get_faction_images()
 
-        self.factions, self.backgrounds = HF.get_factions_backgrounds()
-
-        for bg in self.backgrounds:
-            self.bg_combo_box.addItem(bg)
         for f in self.factions:
             self.faction_combo_box.addItem(f)
 
-        self.bg_combo_box.currentIndexChanged.connect(self.data_changed.emit)
         self.faction_combo_box.currentIndexChanged.connect(
             self.data_changed.emit)
+
+        # Score
+        self.score = QtWidgets.QLineEdit()
+        self.score.setPlaceholderText("–")
+        self.score.setToolTip("Player score. Don't change if best of one.")
+        self.score.setMaximumWidth(30)
+        self.score.setAlignment(QtCore.Qt.AlignCenter)
+        self.score.textChanged.connect(self.data_changed.emit)
+        layout.addWidget(self.score)
+
+        # Team
+        self.team = QtWidgets.QLineEdit()
+        self.team.setPlaceholderText("–")
+        self.team.setToolTip("Player team. Don't change if best of one.")
+        self.team.setMaximumWidth(30)
+        self.team.setAlignment(QtCore.Qt.AlignCenter)
+        self.team.textChanged.connect(self.data_changed.emit)
+        layout.addWidget(self.team)
 
         # Remove button
         self.btn_remove = QtWidgets.QPushButton()
@@ -84,28 +86,34 @@ class Player(QtWidgets.QFrame):
             self.score.textChanged.connect(self.data_changed.emit)
 
     def open_color_dialog(self, button):
-        color = QtWidgets.QColorDialog.getColor()
-        if color.isValid():
-            self.color = color.name()
-            button.setStyleSheet(f'background-color: {color.name()}')
+        color_dialog = QtWidgets.QColorDialog(self)
+        color_dialog.setCurrentColor(QtGui.QColor(self.color))
+        color_dialog.exec_()
+
+        if not color_dialog.currentColor().isValid():
+            return
+
+        color = color_dialog.currentColor().name()
+        if color != self.color:
+            self.color = color
+            button.setStyleSheet(f'background-color: {color}')
             self.data_changed.emit()
-
-    def get_name(self):
-        return self.player_name.text()
-
-    def get_score(self):
-        return self.score.text()
-
-    def get_color(self):
-        return self.color
 
     def get_faction(self):
         text = self.faction_combo_box.currentText()
         return self.factions[text]
 
-    def get_background(self):
-        text = self.bg_combo_box.currentText()
-        return self.backgrounds[text]
+    def get_name(self):
+        return self.player_name.text()
+
+    def get_color(self):
+        return self.color
+
+    def get_score(self):
+        return self.score.text()
+
+    def get_team(self):
+        return self.team.text()
 
     def get_data(self):
         """ Returns all player data"""
@@ -114,5 +122,5 @@ class Player(QtWidgets.QFrame):
             'score': self.get_score(),
             'color': self.get_color(),
             'faction': self.get_faction(),
-            'background': self.get_background()
+            'team': self.get_team()
         }

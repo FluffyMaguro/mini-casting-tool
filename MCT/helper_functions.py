@@ -1,8 +1,8 @@
 import os
 
 basic_colors = [
-    "#FF0000", "#1CE11C", "#1414E5", "#DDEB00", "#FC6500", "#CA3A76",
-    "#01F7F7", "#B58E4B", "#A93814", "#E73EE2"
+    '#ff0000', '#1ce11c', '#1414e5', '#ddeb00', '#fc6500', '#ca3a76',
+    '#01f7f7', '#b58e4b', '#a93814', '#e73ee2'
 ]
 
 
@@ -10,14 +10,10 @@ def get_basic_color(index):
     return basic_colors[index % len(basic_colors)]
 
 
-def get_factions_backgrounds():
+def get_faction_images():
     """ Returns paths to faction and background images"""
-    bg = os.listdir(outer("layout/backgrounds"))
-    bg = {i: os.path.abspath(os.path.join(os.getcwd(), i)) for i in bg}
-    fc = os.listdir(outer("layout/factions"))
-    fc = {i: os.path.abspath(os.path.join(os.getcwd(), i)) for i in fc}
-
-    return fc, bg
+    images = os.listdir(outer("layout/factions"))
+    return {i: f"./factions/{i}" for i in images}
 
 
 def inner(path):
