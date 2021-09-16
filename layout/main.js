@@ -48,22 +48,19 @@ create_players(ndata);
 function create_players(data) {
     // Clean main
     $("#main").html("");
-    // Sort players based on teams
-    let ndata = data["player_data"].sort(function (a, b) { return a["team"] - b["team"] });
     // Create new players
-    for (let i = 0; i < ndata.length; i++) {
-        if (i == 0 || ndata[i]["team"] != ndata[i - 1]["team"] || ndata[i]["team"] == "")
-            $("#main").append(`<div class='team'><div class='teamico'><span>${ndata[i]["score"]}</span></div></div>`);
-        create_player(ndata[i]);
+    for (let i = 0; i < data["player_data"].length; i++) {
+        if (i == 0 || data["player_data"][i]["team"] != data["player_data"][i - 1]["team"] || data["player_data"][i]["team"] == "")
+            $("#main").append(`<div class='team'><div class='score'><span>${data["player_data"][i]["score"]}</span></div></div>`);
+        create_player(data["player_data"][i]);
     }
     if (data["show_score"]) {
         $(".player").width("90%");
-        $(".teamico").show();
+        $(".score").show();
     } else {
         $(".player").width("100%");
-        $(".teamico").hide();
+        $(".score").hide();
     }
-
     // Fit text to given width
     $(".name").textfill({ maxFontPixels: 2000 });
 }

@@ -5,6 +5,11 @@
     font-style: normal;
 }
 
+:root {
+    --border_color: #999;
+    --border_width: .2vw;
+}
+
 body {
     font-family: Eurostile;
 }
@@ -17,6 +22,8 @@ body {
     position: relative;
     width: 100vw;
     height: 16vw;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.116), rgba(0, 0, 0, 0.4)), linear-gradient(to top, #999, #555 25%, #444 50%, #555 75%, #999);
+    border: var(--border_width) solid var(--border_color);
 }
 
 .overlay {
@@ -43,6 +50,7 @@ body {
 
 span {
     font-size: 7vw;
+    text-shadow: .3vw .3vw rgba(0, 0, 0, 0.4);
 }
 
 .ptext>span {
@@ -59,20 +67,23 @@ span {
 .team {
     position: relative;
     margin: 1vw 0 1vw 0;
-    border: 0.4vw solid #999;
+    border: var(--border_width) solid var(--border_color);
+    box-shadow: 0 0 .3vw var(--border_color);
 }
 
-.teamico {
+.score {
     position: absolute;
     width: 10%;
     top: 0vw;
     right: 0vw;
-    background: #2E2E2E;
-    height: 100%;
+    background-image: linear-gradient(to bottom right, #222, #666);
+    height: calc(100% - 2*var(--border_width));
+    border: var(--border_width) solid var(--border_color);
+    border-left: calc(2*var(--border_width)) solid var(--border_color);
+    z-index: 2
 }
 
-.teamico span {
-    background: #2E2E2E;
+.score span {
     color: white;
     position: absolute;
     top: 50%;

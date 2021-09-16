@@ -133,6 +133,27 @@ class AppWindow(QtWidgets.QWidget):
                 team_scores[team] = player.get_score()
                 player.score.setDisabled(False)
 
+    def sort_players(self):
+        """ Sort players based on their teams""" 
+        teams = [p.get_team() for p in self.players]
+        for i in range(len(self.players)):
+            if i == 0:
+                continue
+            if teams[i] < teams[i - 1]: # If the next player is in a lower team
+                for new_place, team_iter in enumerate(teams): # Find him a new place
+                    if teams[i] < team_iter:
+                        self.move_player(i, new_place)
+                        self.sort_players() # Start anew since we changed the player order
+                        return
+
+    def move_player(self, player_index, new_index):
+        """ Moves a player to the new index. Updates self.players and layouts """
+        player = self.players[player_index]
+        self.players.remove(player)
+        self.players.insert(new_index, player)
+        self.player_layout.removeWidget(player)
+        self.player_layout.insertWidget(new_index, player)
+
     def player_data_changed(self):
         """ What happens when player data is changed"""
         # This lock prevents this function from triggering itself again by changing data
@@ -140,6 +161,7 @@ class AppWindow(QtWidgets.QWidget):
             return
         self.connection_locked = True
 
+        self.sort_players()
         self.update_show_screen_checkbox()
         self.sync_player_scores()
 
