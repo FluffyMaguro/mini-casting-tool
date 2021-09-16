@@ -24,6 +24,7 @@ class AppWindow(QtWidgets.QWidget):
         self.players = []
         self.connection_manager = Websocket_connection_manager()
         self.connection_manager.run()
+        self.connection_locked = False
 
         # Layout
         self.layout = QtWidgets.QVBoxLayout()
@@ -45,8 +46,15 @@ class AppWindow(QtWidgets.QWidget):
         # Reset players button
         reset_players_button = QtWidgets.QPushButton()
         reset_players_button.setText("Reset")
+        reset_players_button.setToolTip("Resets players names and scores")
         control_layout.addWidget(reset_players_button)
         reset_players_button.clicked.connect(self.reset_players)
+
+        # Show score
+        self.show_score = QtWidgets.QCheckBox("Show score")
+        control_layout.addWidget(self.show_score)
+        self.show_score.setMaximumWidth(100)
+        self.show_score.stateChanged.connect(self.player_data_changed)
 
         # Github button
         github_button = QtWidgets.QPushButton(" App")
@@ -105,11 +113,46 @@ class AppWindow(QtWidgets.QWidget):
         self.resize(self.width(), self.layout.sizeHint().height())
         self.player_data_changed()
 
+    def update_show_screen_checkbox(self):
+        """ Check whether to show score based on checkbox and score values. Disable checkbox accordingly."""
+        if any(i.get_score() for i in self.players):
+            self.show_score.setChecked(True)
+            self.show_score.setDisabled(True)
+        else:
+            self.show_score.setDisabled(False)
+
+    def sync_player_scores(self):
+        """ Disables and syncs player score widgets for additional players on the same team"""
+        team_scores = dict()
+        for player in self.players:
+            team = player.get_team()
+            if team in team_scores:
+                player.score.setDisabled(True)
+                player.score.setCurrentIndex(team_scores[team])
+            else:
+                team_scores[team] = player.get_score()
+                player.score.setDisabled(False)
+
     def player_data_changed(self):
+        """ What happens when player data is changed"""
+        # This lock prevents this function from triggering itself again by changing data
+        if self.connection_locked:
+            return
+        self.connection_locked = True
+
+        self.update_show_screen_checkbox()
+        self.sync_player_scores()
+
+        # Gather all data and send through a websocket
         data = []
         for player in self.players:
             data.append(player.get_data())
-        self.connection_manager.send(data)
+        self.connection_manager.send({
+            "player_data": data,
+            "show_score": self.show_score.isChecked()
+        })
+
+        self.connection_locked = False
 
 
 if __name__ == '__main__':

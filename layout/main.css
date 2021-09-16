@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'Eurostile';
+    src: url('Eurostile-Reg.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    font-family: Eurostile;
+}
+
 #main {
     position: relative;
 }
@@ -30,6 +41,10 @@
     transform: translateY(-50%);
 }
 
+span {
+    font-size: 7vw;
+}
+
 .ptext>span {
     color: white;
     font-weight: bold;
@@ -37,12 +52,8 @@
 
 .name {
     margin-left: 2%;
-    width: 70%;
+    width: 75%;
     white-space: nowrap;
-}
-
-.score {
-    right: 5%;
 }
 
 .team {
@@ -58,7 +69,6 @@
     right: 0vw;
     background: #2E2E2E;
     height: 100%;
-    text-align: center;
 }
 
 .teamico span {
@@ -66,5 +76,7 @@
     color: white;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    text-align: center;
 }

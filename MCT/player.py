@@ -37,30 +37,27 @@ class Player(QtWidgets.QFrame):
         self.faction_combo_box.setToolTip("Change player faction image")
         layout.addWidget(self.faction_combo_box)
         self.factions = HF.get_faction_images()
-
         for f in self.factions:
             self.faction_combo_box.addItem(f)
-
         self.faction_combo_box.currentIndexChanged.connect(
             self.data_changed.emit)
 
-        # Score
-        self.score = QtWidgets.QLineEdit()
-        self.score.setPlaceholderText("–")
-        self.score.setToolTip("Player score. Don't change if best of one.")
-        self.score.setMaximumWidth(30)
-        self.score.setAlignment(QtCore.Qt.AlignCenter)
-        self.score.textChanged.connect(self.data_changed.emit)
-        layout.addWidget(self.score)
-
         # Team
-        self.team = QtWidgets.QLineEdit()
-        self.team.setPlaceholderText("–")
-        self.team.setToolTip("Player team. Don't change if best of one.")
-        self.team.setMaximumWidth(30)
-        self.team.setAlignment(QtCore.Qt.AlignCenter)
-        self.team.textChanged.connect(self.data_changed.emit)
+        self.team = QtWidgets.QComboBox()
+        self.team.setMaximumWidth(70)
+        for i in range(1, 16):
+            self.team.addItem(f"Team {i:02}")
+        self.team.setCurrentIndex(index)
+        self.team.currentIndexChanged.connect(self.data_changed.emit)
         layout.addWidget(self.team)
+
+        # Score
+        self.score = QtWidgets.QComboBox()
+        self.score.setMaximumWidth(72)
+        for i in range(0, 16):
+            self.score.addItem(f"Score: {i}")
+        self.score.currentIndexChanged.connect(self.data_changed.emit)
+        layout.addWidget(self.score)
 
         # Remove button
         self.btn_remove = QtWidgets.QPushButton()
@@ -79,11 +76,11 @@ class Player(QtWidgets.QFrame):
             self.score.disconnect()
 
         self.player_name.setText("")
-        self.score.setText("")
+        self.score.setCurrentIndex(0)
 
         if disconnect:
             self.player_name.textChanged.connect(self.data_changed.emit)
-            self.score.textChanged.connect(self.data_changed.emit)
+            self.score.currentIndexChanged.connect(self.data_changed.emit)
 
     def open_color_dialog(self, button):
         color_dialog = QtWidgets.QColorDialog(self)
@@ -110,10 +107,10 @@ class Player(QtWidgets.QFrame):
         return self.color
 
     def get_score(self):
-        return self.score.text()
+        return self.score.currentIndex()
 
     def get_team(self):
-        return self.team.text()
+        return self.team.currentIndex() + 1
 
     def get_data(self):
         """ Returns all player data"""
