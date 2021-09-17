@@ -7,7 +7,7 @@
 
 :root {
     --border_color: #ccc;
-    --team_border_color: #white;
+    --team_border_color: #ccc;
     --border_width: .1vw;
 }
 
@@ -44,8 +44,7 @@
     height: 100%;
     width: auto;
     border-right: calc(1*var(--border_width)) solid var(--border_color);
-    background-color: rgba(0, 0, 0, 0.041);
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.411));
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.253));
 }
 
 span {

@@ -5,3 +5,6 @@ venv/*
 *.spec
 test.py
 debug.js
+App.build/*
+App.dist/*
+*.bat
