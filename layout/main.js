@@ -38,11 +38,6 @@ function reconnect_to_socket(message) {
     }, 500);
 }
 
-// DEBUG
-var message = `{"player_data": [{"name": "Maguro", "score": 1, "color": "#ff0000", "faction": "./factions/GDI.jpg", "team": 1}, {"name": "Spartak", "score": 1, "color": "#1414e5", "faction": "./factions/GDI.jpg", "team": 1}, {"name": "Wayward", "score": 2, "color": "#1ce11c", "faction": "./factions/GDI.jpg", "team": 2}, {"name": "Coa", "score": 2, "color": "#ddeb00", "faction": "./factions/GDI.jpg", "team": 2}], "show_score": true}`;
-var ndata = JSON.parse(message);
-create_players(ndata);
-
 
 // Goes over players and adds them to the document
 function create_players(data) {

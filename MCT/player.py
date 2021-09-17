@@ -19,13 +19,14 @@ class Player(QtWidgets.QFrame):
         # Name
         self.player_name = QtWidgets.QLineEdit()
         self.player_name.setPlaceholderText("Player name")
+        self.player_name.setStatusTip("Change player name")
         self.player_name.setMaximumWidth(200)
         self.player_name.textChanged.connect(self.data_changed.emit)
         layout.addWidget(self.player_name)
 
         # Color
         color_button = QtWidgets.QPushButton()
-        color_button.setToolTip("Change player color")
+        color_button.setStatusTip("Change player color")
         color_button.setMaximumWidth(26)
         color_button.setStyleSheet(f'background-color: {self.color}')
         layout.addWidget(color_button)
@@ -34,7 +35,7 @@ class Player(QtWidgets.QFrame):
 
         # Faction & background
         self.faction_combo_box = QtWidgets.QComboBox()
-        self.faction_combo_box.setToolTip("Change player faction image")
+        self.faction_combo_box.setStatusTip("Change player faction image")
         layout.addWidget(self.faction_combo_box)
         self.factions = HF.get_faction_images()
         for f in self.factions:
@@ -48,6 +49,7 @@ class Player(QtWidgets.QFrame):
         for i in range(1, 16):
             self.team.addItem(f"Team {i:02}")
         self.team.setCurrentIndex(index)
+        self.team.setStatusTip("Change player team")
         self.team.currentIndexChanged.connect(self.data_changed.emit)
         layout.addWidget(self.team)
 
@@ -56,12 +58,13 @@ class Player(QtWidgets.QFrame):
         self.score.setMaximumWidth(72)
         for i in range(0, 16):
             self.score.addItem(f"Score: {i}")
+        self.score.setStatusTip("Change player score")
         self.score.currentIndexChanged.connect(self.data_changed.emit)
         layout.addWidget(self.score)
 
         # Remove button
         self.btn_remove = QtWidgets.QPushButton()
-        self.btn_remove.setToolTip("Remove player")
+        self.btn_remove.setStatusTip("Remove player")
         self.btn_remove.setMaximumWidth(26)
         self.btn_remove.setStyleSheet("border :0px")
         self.btn_remove.setIcon(self.style().standardIcon(

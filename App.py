@@ -5,180 +5,56 @@ from functools import partial
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 import MCT.helper_functions as HF
-from MCT.player import Player
-from MCT.websocket import Websocket_connection_manager
+from MCT.main_widget import MainWidget
 
 VERSION = "1.0"
 
 
-class AppWindow(QtWidgets.QWidget):
-    def __init__(self):
-        super().__init__()
+class basicMenubar(QtWidgets.QMainWindow):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.setWindowTitle(f"Minimal Casting Tool (v{VERSION})")
         self.setWindowIcon(QtGui.QIcon(HF.inner('src/Icon.ico')))
         self.setGeometry(0, 0, 530, 150)
         self.move(QtWidgets.QDesktopWidget().availableGeometry().center() -
                   QtCore.QPoint(int(self.width() / 2), self.height()))
 
-        # Attributes
-        self.players = []
-        self.connection_manager = Websocket_connection_manager()
-        self.connection_manager.run()
-        self.connection_locked = False
+        # Create central widget
+        self.setCentralWidget(MainWidget())
 
-        # Layout
-        self.layout = QtWidgets.QVBoxLayout()
-        self.layout.setAlignment(QtCore.Qt.AlignTop)
-        self.setLayout(self.layout)
+        # Menu bar
+        menubar = self.menuBar()
+        file_menu = menubar.addMenu('File')
+        link_menu = menubar.addMenu('Links')
 
-        # Bottom frame
-        control_frame = QtWidgets.QFrame()
-        self.layout.addWidget(control_frame)
-        control_layout = QtWidgets.QHBoxLayout()
-        control_frame.setLayout(control_layout)
+        # Exit
+        icon = self.style().standardIcon(
+            getattr(QtWidgets.QStyle, 'SP_DialogCloseButton'))
+        exitAction = QtWidgets.QAction(icon, 'Exit', self)
+        exitAction.setStatusTip('Exit application')
+        exitAction.triggered.connect(QtWidgets.qApp.quit)
+        file_menu.addAction(exitAction)
 
-        # Add player button
-        add_player_button = QtWidgets.QPushButton()
-        add_player_button.setText("Add player")
-        control_layout.addWidget(add_player_button)
-        add_player_button.clicked.connect(self.add_player)
-
-        # Reset players button
-        reset_players_button = QtWidgets.QPushButton()
-        reset_players_button.setText("Reset")
-        reset_players_button.setToolTip("Resets players names and scores")
-        control_layout.addWidget(reset_players_button)
-        reset_players_button.clicked.connect(self.reset_players)
-
-        # Show score
-        self.show_score = QtWidgets.QCheckBox("Show score")
-        control_layout.addWidget(self.show_score)
-        self.show_score.setMaximumWidth(100)
-        self.show_score.stateChanged.connect(self.player_data_changed)
-
-        # Github button
-        github_button = QtWidgets.QPushButton(" App")
-        github_button.setMaximumWidth(44)
-        github_button.setToolTip("Link to the github page of the app")
-        github_button.setStyleSheet("border: 0")
-        github_button.clicked.connect(
+        # Github
+        icon = QtGui.QIcon(HF.inner("src/github.png"))
+        githubAction = QtWidgets.QAction(icon, 'Github page', self)
+        githubAction.triggered.connect(
             partial(webbrowser.open,
                     "https://github.com/FluffyMaguro/mini-casting-tool"))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(HF.inner("src/github.png")),
-                       QtGui.QIcon.Selected, QtGui.QIcon.On)
-        github_button.setIcon(icon)
-        control_layout.addWidget(github_button)
+        link_menu.addAction(githubAction)
 
-        # Maguro button
-        maguro_button = QtWidgets.QPushButton(" Website")
-        maguro_button.setMaximumWidth(60)
-        maguro_button.setToolTip("Link to my website")
-        maguro_button.setStyleSheet("border: 0")
-        maguro_button.clicked.connect(
+        # Maguro
+        icon = QtGui.QIcon(HF.inner("src/maguro.jpg"))
+        maguroAction = QtWidgets.QAction(icon, 'Maguro.one', self)
+        maguroAction.triggered.connect(
             partial(webbrowser.open, "https://www.maguro.one/"))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(HF.inner("src/maguro.jpg")),
-                       QtGui.QIcon.Selected, QtGui.QIcon.On)
-        maguro_button.setIcon(icon)
-        control_layout.addWidget(maguro_button)
+        link_menu.addAction(maguroAction)
 
-        # Players
-        players_frame = QtWidgets.QFrame(self)
-        self.layout.addWidget(players_frame)
-        self.player_layout = QtWidgets.QVBoxLayout()
-        self.player_layout.setAlignment(QtCore.Qt.AlignTop)
-        players_frame.setLayout(self.player_layout)
-        self.add_player()
-        self.add_player()
-
-    def add_player(self):
-        player_index = len(self.players)
-        self.players.append(Player(player_index))
-        self.player_layout.addWidget(self.players[-1])
-        self.players[-1].btn_remove.clicked.connect(
-            partial(self.remove_player, self.players[-1]))
-        self.players[-1].data_changed.connect(self.player_data_changed)
-        self.player_data_changed()
-
-    def reset_players(self):
-        for player in self.players:
-            player.reset_player()
-        self.player_data_changed()
-
-    def remove_player(self, player_frame):
-        self.player_layout.removeWidget(player_frame)
-        self.players.remove(player_frame)
-        player_frame.deleteLater()
-        self.resize(self.width(), self.layout.sizeHint().height())
-        self.player_data_changed()
-
-    def update_show_screen_checkbox(self):
-        """ Check whether to show score based on checkbox and score values. Disable checkbox accordingly."""
-        if any(i.get_score() for i in self.players):
-            self.show_score.setChecked(True)
-            self.show_score.setDisabled(True)
-        else:
-            self.show_score.setDisabled(False)
-
-    def sync_player_scores(self):
-        """ Disables and syncs player score widgets for additional players on the same team"""
-        team_scores = dict()
-        for player in self.players:
-            team = player.get_team()
-            if team in team_scores:
-                player.score.setDisabled(True)
-                player.score.setCurrentIndex(team_scores[team])
-            else:
-                team_scores[team] = player.get_score()
-                player.score.setDisabled(False)
-
-    def sort_players(self):
-        """ Sort players based on their teams""" 
-        teams = [p.get_team() for p in self.players]
-        for i in range(len(self.players)):
-            if i == 0:
-                continue
-            if teams[i] < teams[i - 1]: # If the next player is in a lower team
-                for new_place, team_iter in enumerate(teams): # Find him a new place
-                    if teams[i] < team_iter:
-                        self.move_player(i, new_place)
-                        self.sort_players() # Start anew since we changed the player order
-                        return
-
-    def move_player(self, player_index, new_index):
-        """ Moves a player to the new index. Updates self.players and layouts """
-        player = self.players[player_index]
-        self.players.remove(player)
-        self.players.insert(new_index, player)
-        self.player_layout.removeWidget(player)
-        self.player_layout.insertWidget(new_index, player)
-
-    def player_data_changed(self):
-        """ What happens when player data is changed"""
-        # This lock prevents this function from triggering itself again by changing data
-        if self.connection_locked:
-            return
-        self.connection_locked = True
-
-        self.sort_players()
-        self.update_show_screen_checkbox()
-        self.sync_player_scores()
-
-        # Gather all data and send through a websocket
-        data = []
-        for player in self.players:
-            data.append(player.get_data())
-        self.connection_manager.send({
-            "player_data": data,
-            "show_score": self.show_score.isChecked()
-        })
-
-        self.connection_locked = False
+        self.statusBar()
+        self.show()
 
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = AppWindow()
-    MainWindow.show()
+    ex = basicMenubar()
     sys.exit(app.exec_())

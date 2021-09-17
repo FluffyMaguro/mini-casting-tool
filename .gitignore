@@ -4,3 +4,4 @@ venv/*
 *.pyc
 *.spec
 test.py
+debug.js

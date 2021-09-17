@@ -13,7 +13,10 @@ def get_basic_color(index):
 def get_faction_images():
     """ Returns paths to faction and background images"""
     images = os.listdir(outer("layout/factions"))
-    return {i: f"./factions/{i}" for i in images}
+    return {
+        i.replace(".png", "").replace(".jpg", ""): f"./factions/{i}"
+        for i in images
+    }
 
 
 def inner(path):
