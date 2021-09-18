@@ -22,7 +22,7 @@ class MainWidget(QtWidgets.QWidget):
         self.layout.setAlignment(QtCore.Qt.AlignTop)
         self.setLayout(self.layout)
 
-        # Bottom frame
+        # Control frame
         control_frame = QtWidgets.QFrame()
         self.layout.addWidget(control_frame)
         control_layout = QtWidgets.QHBoxLayout()
@@ -31,24 +31,24 @@ class MainWidget(QtWidgets.QWidget):
         # Add player button
         add_player_button = QtWidgets.QPushButton()
         add_player_button.setText("Add player")
-        control_layout.addWidget(add_player_button)
         add_player_button.clicked.connect(self.add_player)
         add_player_button.setStatusTip("Add new player")
+        control_layout.addWidget(add_player_button)
 
         # Reset players button
         reset_players_button = QtWidgets.QPushButton()
         reset_players_button.setText("Reset")
         reset_players_button.setStatusTip("Resets players names and scores")
-        control_layout.addWidget(reset_players_button)
         reset_players_button.clicked.connect(self.reset_players)
+        control_layout.addWidget(reset_players_button)
 
         # Show score
         self.show_score = QtWidgets.QCheckBox("Show score")
-        control_layout.addWidget(self.show_score)
         self.show_score.setMaximumWidth(100)
         self.show_score.setChecked(True)
         self.show_score.setStatusTip("Score can be hidden if none is set")
         self.show_score.stateChanged.connect(self.player_data_changed)
+        control_layout.addWidget(self.show_score)
 
         # Players
         players_frame = QtWidgets.QFrame(self)

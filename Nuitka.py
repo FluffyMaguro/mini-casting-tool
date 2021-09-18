@@ -1,6 +1,13 @@
+"""
+A script for compiling the app with nuitka
+
+"""
+
 import os
 import shutil
-from zipfile import ZipFile, ZIP_BZIP2
+from zipfile import ZIP_BZIP2, ZipFile
+
+from App import VERSION
 
 NAME = 'Minimal Casting Tool'
 
@@ -17,7 +24,7 @@ os.system('cmd /c "python -m nuitka'
 shutil.move('App.dist', NAME)
 
 # Zip
-file_name = f"{NAME}.zip"
+file_name = f"{NAME} ({VERSION}).zip"
 
 to_zip = []
 for root, directories, files in os.walk(NAME):

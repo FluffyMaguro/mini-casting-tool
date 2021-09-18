@@ -29,19 +29,19 @@ class Player(QtWidgets.QFrame):
         color_button.setStatusTip("Change player color")
         color_button.setMaximumWidth(26)
         color_button.setStyleSheet(f'background-color: {self.color}')
-        layout.addWidget(color_button)
         color_button.clicked.connect(
             partial(self.open_color_dialog, color_button))
+        layout.addWidget(color_button)
 
         # Faction & background
         self.faction_combo_box = QtWidgets.QComboBox()
         self.faction_combo_box.setStatusTip("Change player faction image")
-        layout.addWidget(self.faction_combo_box)
         self.factions = HF.get_faction_images()
         for f in self.factions:
             self.faction_combo_box.addItem(f)
         self.faction_combo_box.currentIndexChanged.connect(
             self.data_changed.emit)
+        layout.addWidget(self.faction_combo_box)
 
         # Team
         self.team = QtWidgets.QComboBox()
