@@ -2,7 +2,7 @@
  
 A simple application for showing and controlling player score overlay when casting games.
 
-![Screenshot](https://i.imgur.com/de5lYmT.jpg)
+![Screenshot](https://i.imgur.com/2DMNItO.jpg)
 
 # How to use
 

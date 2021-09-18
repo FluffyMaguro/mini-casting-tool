@@ -26,6 +26,7 @@ class MainWidget(QtWidgets.QWidget):
         control_frame = QtWidgets.QFrame()
         self.layout.addWidget(control_frame)
         control_layout = QtWidgets.QHBoxLayout()
+        control_layout.setContentsMargins(17, 0, 0, 0)
         control_frame.setLayout(control_layout)
 
         # Add player button
