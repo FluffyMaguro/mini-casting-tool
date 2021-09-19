@@ -10,6 +10,7 @@ lock = threading.Lock()
 
 
 class Websocket_connection_manager():
+    """ Class managing connection through a websocket to the HTML file"""
     def __init__(self, port=7306):
         self.overlay_messages = []
         self.port = port

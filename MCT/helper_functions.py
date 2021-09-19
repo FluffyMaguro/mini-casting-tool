@@ -1,9 +1,7 @@
 import os
 
-basic_colors = [
-    '#ff0000', '#1ce11c', '#1414e5', '#ddeb00', '#fc6500', '#ca3a76',
-    '#01f7f7', '#b58e4b', '#a93814', '#e73ee2'
-]
+basic_colors = ('#ff0000', '#1ce11c', '#1414e5', '#ddeb00', '#fc6500',
+                '#ca3a76', '#01f7f7', '#b58e4b', '#a93814', '#e73ee2')
 
 
 def get_basic_color(index):
@@ -20,8 +18,12 @@ def get_faction_images():
 
 
 def inner(path):
+    """ Returns inner file path (part of --onefile).
+    If the app was packaged differently, the path would be different."""
     return path
 
 
 def outer(path):
+    """ Returns outer file path (not part of --onefile).
+    If the app was packaged differently, the path would be different."""
     return path

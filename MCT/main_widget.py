@@ -2,12 +2,12 @@ from functools import partial
 
 from PyQt5 import QtCore, QtWidgets
 
-import MCT.helper_functions as HF
 from MCT.player import Player
 from MCT.websocket import Websocket_connection_manager
 
 
 class MainWidget(QtWidgets.QWidget):
+    """ Main widget controlling players """
     def __init__(self):
         super().__init__()
 
@@ -32,8 +32,8 @@ class MainWidget(QtWidgets.QWidget):
         # Add player button
         add_player_button = QtWidgets.QPushButton()
         add_player_button.setText("Add player")
-        add_player_button.clicked.connect(self.add_player)
         add_player_button.setStatusTip("Add new player")
+        add_player_button.clicked.connect(self.add_player)
         control_layout.addWidget(add_player_button)
 
         # Reset players button
@@ -61,8 +61,7 @@ class MainWidget(QtWidgets.QWidget):
         self.add_player()
 
     def add_player(self):
-        player_index = len(self.players)
-        self.players.append(Player(player_index))
+        self.players.append(Player(len(self.players)))
         self.player_layout.addWidget(self.players[-1])
         self.players[-1].btn_remove.clicked.connect(
             partial(self.remove_player, self.players[-1]))
@@ -108,14 +107,13 @@ class MainWidget(QtWidgets.QWidget):
         for i in range(len(self.players)):
             if i == 0:
                 continue
-            if teams[i] < teams[i -
-                                1]:  # If the next player is in a lower team
-                for new_place, team_iter in enumerate(
-                        teams):  # Find him a new place
+            # If the next player is in a lower team, find him a new place
+            if teams[i] < teams[i - 1]:
+                for new_place, team_iter in enumerate(teams):
                     if teams[i] < team_iter:
                         self.move_player(i, new_place)
-                        self.sort_players(
-                        )  # Start anew since we changed the player order
+                        # Start anew since we changed the player order
+                        self.sort_players()
                         return
 
     def move_player(self, player_index, new_index):
@@ -134,13 +132,11 @@ class MainWidget(QtWidgets.QWidget):
         self.connection_locked = True
 
         self.sort_players()
-        self.update_show_screen_checkbox()
         self.sync_player_scores()
+        self.update_show_screen_checkbox()
 
         # Gather all data and send through a websocket
-        data = []
-        for player in self.players:
-            data.append(player.get_data())
+        data = [p.get_data() for p in self.players]
         self.connection_manager.send({
             "player_data": data,
             "show_score": self.show_score.isChecked()

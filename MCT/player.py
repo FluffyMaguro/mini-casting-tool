@@ -45,20 +45,20 @@ class Player(QtWidgets.QFrame):
 
         # Team
         self.team = QtWidgets.QComboBox()
+        self.team.setStatusTip("Change player team")
         self.team.setMaximumWidth(70)
         for i in range(1, 16):
             self.team.addItem(f"Team {i:02}")
         self.team.setCurrentIndex(index)
-        self.team.setStatusTip("Change player team")
         self.team.currentIndexChanged.connect(self.data_changed.emit)
         layout.addWidget(self.team)
 
         # Score
         self.score = QtWidgets.QComboBox()
-        self.score.setMaximumWidth(72)
-        for i in range(0, 16):
-            self.score.addItem(f"Score: {i}")
         self.score.setStatusTip("Change player score")
+        self.score.setMaximumWidth(72)
+        for i in range(0, 51):
+            self.score.addItem(f"Score: {i}")
         self.score.currentIndexChanged.connect(self.data_changed.emit)
         layout.addWidget(self.score)
 

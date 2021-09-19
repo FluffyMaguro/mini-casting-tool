@@ -10,7 +10,7 @@ from MCT.main_widget import MainWidget
 VERSION = "1.0"
 
 
-class basicMenubar(QtWidgets.QMainWindow):
+class MainApp(QtWidgets.QMainWindow):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setWindowTitle(f"Minimal Casting Tool (v{VERSION})")
@@ -22,7 +22,7 @@ class basicMenubar(QtWidgets.QMainWindow):
         # Create central widget
         self.setCentralWidget(MainWidget())
 
-        # Menu bar
+        ### Create menu bar items
         menubar = self.menuBar()
         file_menu = menubar.addMenu('File')
         link_menu = menubar.addMenu('Links')
@@ -56,5 +56,5 @@ class basicMenubar(QtWidgets.QMainWindow):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    ex = basicMenubar()
+    ex = MainApp()
     sys.exit(app.exec_())
