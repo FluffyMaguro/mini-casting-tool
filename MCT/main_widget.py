@@ -43,6 +43,15 @@ class MainWidget(QtWidgets.QWidget):
         reset_players_button.clicked.connect(self.reset_players)
         control_layout.addWidget(reset_players_button)
 
+        # Text inbetween
+        self.text_inbetween = QtWidgets.QLineEdit()
+        self.text_inbetween.setPlaceholderText("Text between players")
+        self.text_inbetween.setStatusTip(
+            'Text between players (for example "Best of 3")')
+        self.text_inbetween.setMaximumWidth(200)
+        self.text_inbetween.textChanged.connect(self.player_data_changed)
+        control_layout.addWidget(self.text_inbetween)
+
         # Show score
         self.show_score = QtWidgets.QCheckBox("Show score")
         self.show_score.setMaximumWidth(100)
@@ -139,6 +148,7 @@ class MainWidget(QtWidgets.QWidget):
         data = [p.get_data() for p in self.players]
         self.connection_manager.send({
             "player_data": data,
+            "text": self.text_inbetween.text(),
             "show_score": self.show_score.isChecked()
         })
 

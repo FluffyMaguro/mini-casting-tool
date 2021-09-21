@@ -2,11 +2,11 @@
  
 A simple application for showing and controlling player score overlay when casting games.
 
-![Screenshot](https://i.imgur.com/2DMNItO.jpg)
+![Screenshot](https://i.imgur.com/EoAMRB7.jpg)
 
 # How to use
 
-1. [**Download compiled app here**](https://github.com/FluffyMaguro/mini-casting-tool/releases/download/1.0/Minimal.Casting.Tool.1.0.zip) or run the source code with Python 3.6+
+1. [**Download compiled app here**](https://github.com/FluffyMaguro/mini-casting-tool/releases/download/1.01/Minimal.Casting.Tool.1.01.zip) or run the source code with Python 3.6+
 2. Drag `layout/layout.html` file to OBS or other broadcasting software 
 3. Resize and move as needed
 4. Launch the app and setup players
@@ -16,11 +16,11 @@ A simple application for showing and controlling player score overlay when casti
 
 1. **How to change which factions are available?**
 
-Edit images in `layout/factions/`
+You can add, remove or edit faction images in `layout/factions/`
 
-Adding new ones will automatically add them to player options.
+This will affect which factions are available.
 
 
-2. **How to change visual style?**
+2. **How to change the visual style?**
 
 Edit `layout/main.css` file.

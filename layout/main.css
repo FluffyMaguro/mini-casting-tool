@@ -24,6 +24,34 @@
     width: 98%;
 }
 
+#textouter {
+    position: relative;
+    right: -15%;
+    left: 17%;
+    top: -6vw;
+    transform: translateY(-50%);
+    width: 68%;
+    height: 0vw;
+    z-index: 2;
+}
+
+#textinner {
+    position: relative;
+    overflow: visible;
+    height: 10vw;
+    text-align: right;
+}
+
+#textinner span {
+    text-shadow: .1vw .1vw .9vw rgba(0, 0, 0, 1);
+    color: white;
+    white-space: nowrap;
+    position: absolute;
+    top: 50%;
+    right: 0vw;
+    transform: translateY(-50%);
+}
+
 .player {
     position: relative;
     height: 14vw;
@@ -44,7 +72,7 @@
     height: 100%;
     width: auto;
     border-right: calc(1*var(--border_width)) solid var(--border_color);
-    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.253));
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.158));
 }
 
 span {
@@ -58,7 +86,7 @@ span {
     top: 50%;
     transform: translateY(-50%);
     margin-left: 2%;
-    width: 75%;
+    width: 78%;
     white-space: nowrap;
 }
 

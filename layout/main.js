@@ -43,10 +43,12 @@ function reconnect_to_socket(message) {
 function create_players(data) {
     // Clean main
     $("#main").html("");
+    let text_inbetween = `<div id="textouter"><div id="textinner"><span>${data["text"]}</span></div></div>`;
     // Create new players
     for (let i = 0; i < data["player_data"].length; i++) {
         if (i == 0 || data["player_data"][i]["team"] != data["player_data"][i - 1]["team"] || data["player_data"][i]["team"] == "")
-            $("#main").append(`<div class='team'><div class='score'><span>${data["player_data"][i]["score"]}</span></div></div>`);
+            $("#main").append(`<div class='team'><div class='score'><span>${data["player_data"][i]["score"]}</span></div></div>${text_inbetween}`);
+        text_inbetween = "";
         create_player(data["player_data"][i]);
     }
     if (data["show_score"]) {
@@ -57,7 +59,7 @@ function create_players(data) {
         $(".score").hide();
     }
     // Fit text to given width
-    $(".name").textfill({ maxFontPixels: 2000 });
+    $(".name, #textinner").textfill({ maxFontPixels: 2000 });
 }
 
 // Creates a player element and adds it to the document

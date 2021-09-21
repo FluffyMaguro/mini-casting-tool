@@ -7,7 +7,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import MCT.helper_functions as HF
 from MCT.main_widget import MainWidget
 
-VERSION = "1.0"
+VERSION = "1.01"
 
 
 class MainApp(QtWidgets.QMainWindow):
