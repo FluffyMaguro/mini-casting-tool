@@ -45,7 +45,7 @@ class MainWidget(QtWidgets.QWidget):
 
         # Text inbetween
         self.text_inbetween = QtWidgets.QLineEdit()
-        self.text_inbetween.setPlaceholderText("Text between players")
+        self.text_inbetween.setPlaceholderText("Text between teams")
         self.text_inbetween.setStatusTip(
             'Text between players (for example "Best of 3")')
         self.text_inbetween.setMaximumWidth(200)

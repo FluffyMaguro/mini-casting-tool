@@ -66,7 +66,7 @@ class Player(QtWidgets.QFrame):
         self.btn_remove = QtWidgets.QPushButton()
         self.btn_remove.setStatusTip("Remove player")
         self.btn_remove.setMaximumWidth(26)
-        self.btn_remove.setStyleSheet("border :0px")
+        self.btn_remove.setStyleSheet("border: 0px")
         self.btn_remove.setIcon(self.style().standardIcon(
             getattr(QtWidgets.QStyle, 'SP_DialogCancelButton')))
         layout.addWidget(self.btn_remove)

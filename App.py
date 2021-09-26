@@ -1,3 +1,4 @@
+import subprocess
 import sys
 import webbrowser
 from functools import partial
@@ -7,7 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import MCT.helper_functions as HF
 from MCT.main_widget import MainWidget
 
-VERSION = "1.01"
+VERSION = "1.02"
 
 
 class MainApp(QtWidgets.QMainWindow):
@@ -26,6 +27,15 @@ class MainApp(QtWidgets.QMainWindow):
         menubar = self.menuBar()
         file_menu = menubar.addMenu('File')
         link_menu = menubar.addMenu('Links')
+
+        # Layouts
+        icon = self.style().standardIcon(
+            getattr(QtWidgets.QStyle, 'SP_DirLinkIcon'))
+        htmlAction = QtWidgets.QAction(icon, 'Layout files', self)
+        htmlAction.setStatusTip('Open the folder with HTML layout files')
+        htmlAction.triggered.connect(
+            lambda: subprocess.run(['explorer', HF.inner("layout")]))
+        file_menu.addAction(htmlAction)
 
         # Exit
         icon = self.style().standardIcon(
