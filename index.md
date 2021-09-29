@@ -1,37 +1,26 @@
-## Welcome to GitHub Pages
+# Minimal Casting Tool
+ 
+A simple application for showing and controlling player score overlay when casting games.
 
-You can use the [editor on GitHub](https://github.com/FluffyMaguro/mini-casting-tool/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![Screenshot](https://i.imgur.com/EoAMRB7.jpg)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# How to use
 
-### Markdown
+1. [**Download compiled app here**](https://github.com/FluffyMaguro/mini-casting-tool/releases/download/1.02/Minimal.Casting.Tool.1.02.zip) or run the source code with Python 3.6+
+2. Drag `layout/layout.html` file to OBS or other broadcasting software 
+3. Resize and move as needed
+4. Launch the app and setup players
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
+# How to
 
-# Header 1
-## Header 2
-### Header 3
+1. **How to change which factions are available?**
 
-- Bulleted
-- List
+You can add, remove or edit faction images in `layout/factions/`
 
-1. Numbered
-2. List
+This will affect which factions are available.
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
-```
+2. **How to change the visual style?**
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/FluffyMaguro/mini-casting-tool/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Edit `layout/main.css` file.
