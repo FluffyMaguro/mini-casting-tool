@@ -18,13 +18,13 @@ class MainWidget(QtWidgets.QWidget):
         self.connection_locked = False
 
         # Layout
-        self.layout = QtWidgets.QVBoxLayout()
-        self.layout.setAlignment(QtCore.Qt.AlignTop)
-        self.setLayout(self.layout)
+        self.main_layout = QtWidgets.QVBoxLayout()
+        self.main_layout.setAlignment(QtCore.Qt.AlignTop)
+        self.setLayout(self.main_layout)
 
         # Control frame
         control_frame = QtWidgets.QFrame()
-        self.layout.addWidget(control_frame)
+        self.main_layout.addWidget(control_frame)
         control_layout = QtWidgets.QHBoxLayout()
         control_layout.setContentsMargins(17, 0, 0, 0)
         control_frame.setLayout(control_layout)
@@ -62,7 +62,7 @@ class MainWidget(QtWidgets.QWidget):
 
         # Players
         players_frame = QtWidgets.QFrame(self)
-        self.layout.addWidget(players_frame)
+        self.main_layout.addWidget(players_frame)
         self.player_layout = QtWidgets.QVBoxLayout()
         self.player_layout.setAlignment(QtCore.Qt.AlignTop)
         players_frame.setLayout(self.player_layout)
